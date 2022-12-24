@@ -43,8 +43,10 @@ function myAxios(axiosConfig: AxiosRequestConfig, customConfig?: CustomConfig) {
   service.interceptors.response.use((response)=>{
     console.log('响应结果', response);
     let allowRepeatRequest;
+    let hideError;
     if(customConfig){
       allowRepeatRequest = customConfig.allowRepeatRequest
+      hideError = customConfig.hideError
     }
 
     let {config} = response
@@ -52,17 +54,27 @@ function myAxios(axiosConfig: AxiosRequestConfig, customConfig?: CustomConfig) {
       let key = createMapKey(config)
       abortMap.delete(key)
     }
-    return response
+    if(!hideError){
+      let code = response.data.code
+      // @ts-ignore
+      if(errorMap[code] !== '正常'){
+        // @ts-ignore
+        message.error(errorMap[code])
+        return Promise.reject('')
+      }
+    }
+    return response.data.data || 'ok'
   }, (error)=>{
     let hideError;
     if(customConfig){
       hideError = customConfig.hideError
     }
     if(!hideError){
+      // 当出现错误情况下，返回的 httpcode 不为 200，都会走这里，处理后端错误情况的第一种和第二种
       // message.error(error.response.data.message)
       message.error(error.response.data.message)
     }
-    console.log('响应错误', error);
+    return Promise.reject('')
   })
 
   return service(axiosConfig)

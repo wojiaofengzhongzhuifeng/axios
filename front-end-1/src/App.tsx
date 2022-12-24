@@ -4,9 +4,11 @@ import {postLogin} from "./api/user";
 
 function App() {
   const getGoods = async ()=>{
-    getListAPI()
-    getListAPI()
-    getListAPI()
+
+    let result = await getListAPI()
+    console.log(result);
+
+
   }
   const login = async ()=>{
     postLogin({username: '123', password: '456'})
