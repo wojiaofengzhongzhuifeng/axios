@@ -8,6 +8,10 @@ type CustomConfig = {
   allowRepeatRequest?: boolean
   hideError?: boolean
 }
+const errorMap = {
+  '00000': '正常',
+  '40001': '没有权限'
+}
 
 function myAxios(axiosConfig: AxiosRequestConfig, customConfig?: CustomConfig) {
   const service = axios.create({
@@ -55,6 +59,7 @@ function myAxios(axiosConfig: AxiosRequestConfig, customConfig?: CustomConfig) {
       hideError = customConfig.hideError
     }
     if(!hideError){
+      // message.error(error.response.data.message)
       message.error(error.response.data.message)
     }
     console.log('响应错误', error);
