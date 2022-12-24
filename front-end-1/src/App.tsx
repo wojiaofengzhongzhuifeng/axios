@@ -9,8 +9,11 @@ function App() {
     getListAPI()
   }
   const login = async ()=>{
-    const res = await postLogin({username: '123', password: '456'})
-    console.log(res);
+    postLogin({username: '123', password: '456'})
+    postLogin({username: '123', password: '456'})
+
+    postLogin({username: '123', password: '456'})
+
   }
 
   return (

@@ -1,4 +1,4 @@
-import axiosInstance from './axios'
+import myAxios from './axios'
 import qs from 'qs';
 
 type LoginInfo = {
@@ -7,7 +7,7 @@ type LoginInfo = {
 }
 
 export function postLogin(loginInfo: LoginInfo){
-  return axiosInstance({
+  return myAxios({
     url: '/login',
     method: 'post',
     data: loginInfo,
