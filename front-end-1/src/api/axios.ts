@@ -1,11 +1,12 @@
 import axios, {AxiosRequestConfig} from 'axios';
-
+import {message} from "antd";
 
 
 const abortMap = new Map()
 
 type CustomConfig = {
   allowRepeatRequest?: boolean
+  hideError?: boolean
 }
 
 function myAxios(axiosConfig: AxiosRequestConfig, customConfig?: CustomConfig) {
@@ -36,6 +37,7 @@ function myAxios(axiosConfig: AxiosRequestConfig, customConfig?: CustomConfig) {
   })
 
   service.interceptors.response.use((response)=>{
+    console.log('响应结果', response);
     let allowRepeatRequest;
     if(customConfig){
       allowRepeatRequest = customConfig.allowRepeatRequest
@@ -48,7 +50,14 @@ function myAxios(axiosConfig: AxiosRequestConfig, customConfig?: CustomConfig) {
     }
     return response
   }, (error)=>{
-    console.log(error)
+    let hideError;
+    if(customConfig){
+      hideError = customConfig.hideError
+    }
+    if(!hideError){
+      message.error(error.response.data.message)
+    }
+    console.log('响应错误', error);
   })
 
   return service(axiosConfig)
