@@ -8,7 +8,7 @@ type LoginInfo = {
 
 export function postLogin(loginInfo: LoginInfo){
   return axiosInstance({
-    url: '/api/login',
+    url: '/login',
     method: 'post',
     data: loginInfo,
     // headers: {
